@@ -34,7 +34,7 @@ class Game {
     // make column tops (clickable area for adding a piece to that column)
     const top = document.createElement('tr');
     top.setAttribute('id', 'column-top');
-    top.addEventListener('click', this.handleClick.bind(this)); // <<< When you're inside your class, you must use .this for methods.
+    top.addEventListener('click', this.handleClick.bind(this));
     //TODO: update the method calls with this.
 
     for (let x = 0; x < this.width; x++) {
@@ -94,10 +94,7 @@ class Game {
     const x = +evt.target.id;
 
     // get next spot in column (if none, ignore click)
-    //need to fix the line below
 
-    console.log('this => ', this);
-    console.log('this is findF => ', this.findSpotForCol);
 
     const y = this.findSpotForCol(x);
     if (y === null) {
@@ -109,7 +106,11 @@ class Game {
     this.placeInTable(y, x);
 
     // check for win
-    if (this.checkForWin()) {
+
+
+    // console.log("CHecking if this is true: "+ (this.checkForWin.bind(this) === true));
+
+    if (this.checkForWin.bind(this)) {
       return this.endGame(`Player ${this.currPlayer} won!`);
     }
 
@@ -125,6 +126,9 @@ class Game {
   /** checkForWin: check board cell-by-cell for "does a win start here?" */
 
   checkForWin() {
+
+    console.log("We are inside check for win");
+
     function _win(cells) {
       // Check four cells to see if they're all color of current player
       //  - cells: list of four (y, x) cells
@@ -150,7 +154,7 @@ class Game {
         const diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
 
         // find winner (only checking each win-possibility as needed)
-        if (this._win(horiz) || this._win(vert) || this._win(diagDR) || this._win(diagDL)) {
+        if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
           return true;
         }
       }
@@ -160,7 +164,7 @@ class Game {
   // This is the bottom of the class
 }
 
-let connectGame = new Game(6,7,[],1,2);
+let connectGame = new Game(6, 7, [], 1, 2);
 
 connectGame.makeBoard();
 connectGame.makeHtmlBoard();
