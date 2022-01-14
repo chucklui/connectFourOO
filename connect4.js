@@ -21,6 +21,7 @@ class Game {
     this.board = board;
     this.currPlayer = currPlayer;
     this.playerCount = playerCount; // how many players
+    this.handleClick = this.handleClick.bind(this);
   }
 
   /**this function make the 2D array of the board */
@@ -37,7 +38,9 @@ class Game {
     // make column tops (clickable area for adding a piece to that column)
     const top = document.createElement('tr');
     top.setAttribute('id', 'column-top');
-    top.addEventListener('click', this.handleClick.bind(this));
+    // const handleClickFunction = this.handleClick.bind(this);
+    // this.handleClickFunction = handleClickFunction;
+    top.addEventListener('click', this.handleClick);
     //TODO: update the method calls with this.
 
     for (let x = 0; x < this.width; x++) {
@@ -73,7 +76,6 @@ class Game {
   }
 
   /** placeInTable: update DOM to place piece into HTML table of board */
-
   placeInTable(y, x) {
     const piece = document.createElement('div');
     piece.classList.add('piece');
@@ -85,13 +87,11 @@ class Game {
   }
 
   /** endGame: announce game end */
-
   endGame(msg) {
     alert(msg);
   }
 
   /** handleClick: handle click of column top to play piece */
-
   handleClick(evt) {
     // get x from ID of clicked cell
     const x = +evt.target.id;
@@ -110,15 +110,18 @@ class Game {
 
     // check for win
 
-
     // console.log("Checking if this is true: "+ (this.checkForWin.bind(this) === true));
 
-    if (this.checkForWin()) {
+    if (this.checkForWin()){
+      //lock the board and remove the event listener
+      const top = document.getElementById('column-top');
+      top.removeEventListener('click', this.handleClick);
       return this.endGame(`Player ${this.currPlayer} won!`);
     }
 
     // check for tie
     if (this.board.every(row => row.every(cell => cell))) {
+      //lock the board and remove the event listener
       return this.endGame('Tie!');
     }
 
@@ -127,7 +130,6 @@ class Game {
   }
 
   /** checkForWin: check board cell-by-cell for "does a win start here?" */
-
   checkForWin() {
 
     console.log("We are inside check for win");
@@ -195,6 +197,7 @@ function startGame() {
 
     connectGame.makeBoard();
     connectGame.makeHtmlBoard();
+    gameExists = false;
   }
 
 
