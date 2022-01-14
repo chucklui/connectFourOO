@@ -1,4 +1,7 @@
 "use strict";
+
+let gameExists = false; // if button is clicked, make true
+
 /** Connect Four
  *
  * Player 1 and 2 alternate turns. On each turn, a piece is dropped down a
@@ -167,7 +170,34 @@ class Game {
   // This is the bottom of the class
 }
 
-let connectGame = new Game(6, 7, [], 1, 2);
 
-connectGame.makeBoard();
-connectGame.makeHtmlBoard();
+
+
+let startButton = document.getElementById("start-game");
+startButton.addEventListener("click", startGame);
+
+function startGame() {
+
+
+  if(gameExists===false){
+    let connectGame = new Game(6, 7, [], 1, 2);
+
+    connectGame.makeBoard();
+    connectGame.makeHtmlBoard();
+    gameExists = true;
+  } else{
+    document.getElementById("board").remove();
+    let newBoard = document.createElement("table");
+    newBoard.setAttribute("id","board");
+    document.getElementById("game").append(newBoard);
+
+    let connectGame = new Game(6, 7, [], 1, 2);
+
+    connectGame.makeBoard();
+    connectGame.makeHtmlBoard();
+  }
+
+
+}
+
+
