@@ -34,7 +34,7 @@ class Game {
     // make column tops (clickable area for adding a piece to that column)
     const top = document.createElement('tr');
     top.setAttribute('id', 'column-top');
-    top.addEventListener('click', this.handleClick); // <<< When you're inside your class, you must use .this for methods.
+    top.addEventListener('click', this.handleClick.bind(this)); // <<< When you're inside your class, you must use .this for methods.
     //TODO: update the method calls with this.
 
     for (let x = 0; x < this.width; x++) {
@@ -95,7 +95,11 @@ class Game {
 
     // get next spot in column (if none, ignore click)
     //need to fix the line below
-    const y = this.findSpotForCol;
+
+    console.log('this => ', this);
+    console.log('this is findF => ', this.findSpotForCol);
+
+    const y = this.findSpotForCol(x);
     if (y === null) {
       return;
     }
